@@ -45,18 +45,46 @@ $(document).ready(function(){
     
     updateDOM();
     
+    // var hitCheck = function(hitValue, AC, damage, attacker, target){
+    //     if (hitValue >= AC) {
+    //         hitConfirm = true;
+    //         console.log("Hit! " + target.name + " takes " + damage + " damage!")
+    //         $("#combatText").text(attacker.name + " has struck " + target.name + " dealing " + damage + "!");
+    //         target.currentHP = target.currentHP - damage
+    //         updateDOM();
+    //         deathCheck(attacker, target);
+    //     }
+    //     else {
+    //         hitConfirm = false;
+    //         console.log("Miss!")
+    //         $("#combatText").text(attacker.name + " has missed " + target.name + "!")
+    //     }
+    //     console.log(hitConfirm)
+    // }
+
     var hitCheck = function(hitValue, AC, damage, attacker, target){
-        if (hitValue >= AC) {
+        var raw = hitValue - attacker.attBonus
+        var criticalDamage = damage + Math.floor(Math.random() * attacker.damageDie) + 1
+        // console.log(criticalDamage)
+        console.log(raw)
+        if (raw === 20){
             hitConfirm = true;
-            console.log("Hit! " + target.name + " takes " + damage + " damage!")
+            console.log("CRITICAL!!! " + target.name + " takes double damage!")
+            $("#combatText").text(attacker.name + " has critically struck " + target.name + " for " + criticalDamage + "!")
+            target.currentHP = target.currentHP - criticalDamage
+            updateDOM();
+            deathCheck(attacker, target);
+        } else if (hitValue >= AC && raw > 1) {
+            hitConfirm = true;
+            // console.log("Hit! " + target.name + " takes " + damage + " damage!")
             $("#combatText").text(attacker.name + " has struck " + target.name + " dealing " + damage + "!");
             target.currentHP = target.currentHP - damage
             updateDOM();
             deathCheck(attacker, target);
         }
-        else {
+        else if (hitValue < AC || raw === 1){
             hitConfirm = false;
-            console.log("Miss!")
+            // console.log("Miss!")
             $("#combatText").text(attacker.name + " has missed " + target.name + "!")
         }
         console.log(hitConfirm)
