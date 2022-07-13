@@ -95,6 +95,13 @@ $(document).ready(function(){
     $("#rex").click(function(){
         rexAttack();
     })
+
+    $("#reset").click(function(){
+        rex.currentHP = rex.hpMax
+        bear.currentHP = bear.hpMax
+        updateDOM();
+        $("#combatText").text("Again!")
+    })
     
     })
     
