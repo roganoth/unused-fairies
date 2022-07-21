@@ -13,7 +13,6 @@ $(document).ready(function(){
     var rex = {
         name: "Rex Troy",
         attBonus: 6,
-        magic: true,
         AC: 16,
         damageDie: 8,
         damageBonus: 4,
@@ -24,7 +23,6 @@ $(document).ready(function(){
     var bear = {
         name: "Brown bear",
         attBonus: 8,
-        magic: false,
         AC: 11,
         damageDie: 8,
         damageBonus: 4,
@@ -32,6 +30,50 @@ $(document).ready(function(){
         currentHP: 34
     }
     
+    function populateResults(data) {
+        var dudes = data.combatants;
+        var len = data.combatants.length;
+
+        var dudes_elem = $("#combatantSelection");
+        for (i = 0; i < len; i++) {
+            //adding data attr to button for modal
+            var selectorButton = $("<button>");
+            selectorButton.addClass("dudeInfo");
+            selectorButton.addClass("btn btn-info btn-sm");
+            selectorButton.att("id","select");
+            selectorButton.attr("data-id", dudes[i].id);
+            selectorButton.attr("data-name", dudes[i].name);
+            selectorButton.attr("data-ac", dudes[i].ac);
+            selectorButton.attr("data-attack", dudes[i].attack);
+            selectorButton.attr("data-damageDie", dudes[i].damageDie);
+            selectorButton.attr("data-damageBonus", dudes[i].damageBonus);
+            selectorButton.attr("data-currentHp", dudes[i].currentHp);
+            selectorButton.attr("data-maxHp", dudes[i].maxHp);
+            selectorButton.attr("data-strSave", dudes[i].strSave);
+            selectorButton.attr("data-dexSave", dudes[i].dexSave);
+            selectorButton.attr("data-conSave", dudes[i].conSave);
+            selectorButton.attr("data-intSave", dudes[i].intSave);
+            selectorButton.attr("data-wisSave", dudes[i].wisSave);
+            selectorButton.attr("data-chaSave", dudes[i].chaSave);
+            selectorButton.text("Choose");
+
+                
+            var nameString = $(`<li> ${dudes[i].name} </li><hr>`);
+
+            
+            nameString.append(selectorButton);
+            dudes_elem.append(nameString);
+        };
+    };
+
+    $.ajax("/combatants", {
+        type: "GET"
+    }).then(function (data) {
+        populateResults(data);
+        console.log("got it")
+    });
+
+
     var deathCheck = function(attacker, target){
         if (target.currentHP <= 0){
             $("#hpTracker").text(attacker.name + " has defeated " + target.name + "!");

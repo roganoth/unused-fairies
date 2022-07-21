@@ -1,9 +1,9 @@
 require("dotenv").config();
 var express = require("express");
-var employees = require("../models/hrApp.js");
+var employees = require("../models/combatApp.js");
 var router = express.Router();
 var path = require("path")
-var keys = require("../config/keys")
+// var keys = require("../config/keys")
 
 router.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
@@ -11,7 +11,7 @@ router.get("/", function (req, res) {
 
 router.get("/combatants", function (req, res) {
     combatants.selectAll(function (data) {
-        res.json({ employees: data });
+        res.json({ combatants: data });
     });
 });
 
@@ -26,20 +26,20 @@ router.post("/combatants", function (req, res) {
     });
 });
 
-router.put("/combatants/:id", function (req, res) {
-    var condition = "id = " + req.params.id;
+// router.put("/combatants/:id", function (req, res) {
+//     var condition = "id = " + req.params.id;
 
-    combatants.updateOne({
-        req.body.name, req.body.ac, req.body.attack, req.body.damageDie, req.body.damageBonus, req.body.currentHp, req.body.maxHp, req.body.strSave, req.body.dexSave, req.body.conSave, req.body.intSave, req.body.wisSave, req.body.chaSave, req.body.level
-    }, condition, function (result) {
-        if (result.changedRows == 0) {
-            return res.status(404).end();
-        }
-        else {
-            res.json({ id: req.params.id });
-        }
-    });
-});
+//     combatants.updateOne({
+//         req.body.name, req.body.ac, req.body.attack, req.body.damageDie, req.body.damageBonus, req.body.currentHp, req.body.maxHp, req.body.strSave, req.body.dexSave, req.body.conSave, req.body.intSave, req.body.wisSave, req.body.chaSave, req.body.level
+//     }, condition, function (result) {
+//         if (result.changedRows == 0) {
+//             return res.status(404).end();
+//         }
+//         else {
+//             res.json({ id: req.params.id });
+//         }
+//     });
+// });
 
 router.delete("/combatants/:id", function (req, res) {
     var condition = "id = " + req.params.id;
